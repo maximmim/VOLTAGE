@@ -6,44 +6,45 @@ function random(number1, number2) {
 
 const Voltage = () => {
   const [voltage, setVoltage] = useState(parseFloat(localStorage.vol));
+  const [lastClickTime, setLastClickTime] = useState(0);
 
   useEffect(() => {
     localStorage.vol = voltage;
     if (voltage >= 12) {
+      const r = random(0, 255);
+      const g = random(0, 255);
+      const b = random(0, 255);
 
-        const r = random(0,255);
-        const g = random(0,255);
-        const b = random(0,255);
-        
-        const randomColor = `drop-shadow(0 0 5px rgb(${r}, ${g}, ${b}))
-        drop-shadow(0 0 10px rgba(${r}, ${g}, ${b}, 0.9))
-        drop-shadow(0 0 15px rgba(${r}, ${g}, ${b}, 0.8))
-        drop-shadow(0 0 20px rgba(${r}, ${g}, ${b}, 0.7))`;
-
-
-        document.getElementsByClassName("Voltage")[0].classList.add("awd")
-        document.getElementsByClassName("Voltage")[0].style.filter = randomColor
+      document.getElementsByClassName("Voltage")[0].classList.add("awd");
+      document.getElementsByClassName("Voltage")[0].style.border = `4px solid rgb(${r},${g},${b})`;
     }
   }, [voltage]);
 
   function wd() {
-    document.getElementById("neon-image").classList.add("actuve");
-    setTimeout(() => {
-      document.getElementById("neon-image").classList.remove("actuve");
+    const currentTime = new Date().getTime();
+    if (currentTime - lastClickTime > 100) {
+      document.getElementById("neon-image").classList.add("active");
+      setTimeout(() => {
+        document.getElementById("neon-image").classList.remove("active");
+        const newVoltage = voltage + random(0.2, 0.7);
+        setVoltage(newVoltage);
+      }, 300);
+      setLastClickTime(currentTime);
+    }
+    else {
+      localStorage.vol = 0
+        setVoltage(0);
+      alert("НАДТО ВЕЛИКИЙ ВОЛЬТАЖЖЖЖЖЖ !!!!")
 
-      const newVoltage = voltage + random(0.2,0.7);
-      setVoltage(newVoltage);
-    }, 300);
+
+    }
   }
-
-  
 
   return (
     <>
       <div className="Voltage">
         <div className="Voltage_state">
-          <p>{voltage.toFixed(1)}⚡</p>
-
+          <p>{voltage.toFixed(1)}v</p>
         </div>
 
         <img
