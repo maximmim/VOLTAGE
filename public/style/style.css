@@ -70,3 +70,8 @@
     color: rgb(255, 255, 110);
     font-size: 30px;
 }
+.Voltage_state span {
+margin-left: 10px;
+    color: rgb(255, 255, 255);
+
+}
